@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codebuilder Quest</title>
+  <style>
+    /* Reset and Layout */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: #0a0a1a; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* Phaser Container */
+    #game-container {
+      border: 4px solid #1e3a5f;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Hidden Utility Class */
+    .hidden { display: none !important; }
+
+    /* Code Editor Panel */
+    #code-panel {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      background: rgba(15, 25, 35, 0.95);
+      border: 2px solid #4a90d9;
+      border-radius: 8px;
+      padding: 15px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 0 30px rgba(74, 144, 217, 0.3);
+    }
+
+    #code-editor {
+      width: 100%;
+      height: 120px;
+      background: #050a0f;
+      color: #00ff88;
+      border: 1px solid #1e3a5f;
+      padding: 10px;
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 13px;
+      resize: none;
+      outline: none;
+    }
+
+    #code-feedback {
+      font-size: 12px;
+      min-height: 18px;
+      font-weight: bold;
+    }
+
+    #submit-code {
+      background: #4a90d9;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.2s;
+    }
+
+    #submit-code:hover {
+      background: #5fb2ff;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container"></div>
+
+  <div id="code-panel" class="hidden">
+    <div style="color: #4a90d9; font-size: 11px; margin-bottom: 5px;">> TERMINAL_EXECUTOR.EXE</div>
+    <textarea id="code-editor" spellcheck="false"></textarea>
+    <div id="code-feedback"></div>
+    <button id="submit-code">Run Script</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  
+  <script type="module" src="game.js"></script>
+
+</body>
+</html>
