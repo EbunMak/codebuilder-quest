@@ -357,17 +357,17 @@ export default class CavernsScene extends Phaser.Scene {
   createPlayerSprite() {
     this.playerSprite?.destroy()
     this.playerLabel?.destroy()
-    this.playerPos = { x: 130, y: 250 }
+    this.playerPos = { x: 65, y: 250 }
 
     if (window.playerData?.characterKey) {
-      this.playerSprite = this.add.image(130, 250, 'player_char')
+      this.playerSprite = this.add.image(65, 250, 'player_char')
         .setScale(0.1).setDepth(10)
     } else {
-      this.playerSprite = this.add.circle(130, 250, 16, 0xff6b9d)
+      this.playerSprite = this.add.circle(65, 250, 16, 0xff6b9d)
         .setDepth(10)
     }
 
-    this.playerLabel = this.add.text(130, 274,
+    this.playerLabel = this.add.text(65, 274,
       window.playerData?.name || 'You', {
       fontSize: '9px', color: '#ffffff',
       fontFamily: 'Courier New'
@@ -493,9 +493,9 @@ export default class CavernsScene extends Phaser.Scene {
       this.cleanupLevel()
       this.time.delayedCall(300, () => this.showGameOver())
     } else {
-      this.playerPos = { x: 130, y: 250 }
-      this.playerSprite?.setPosition(130, 250)
-      this.playerLabel?.setPosition(130, 274)
+      this.playerPos = { x: 65, y: 250 }
+      this.playerSprite?.setPosition(65, 250)
+      this.playerLabel?.setPosition(65, 274)
     }
   }
 
@@ -791,56 +791,74 @@ export default class CavernsScene extends Phaser.Scene {
   }
 
   showGameOver() {
-    const ov = this.add.graphics().setDepth(25)
+    // Hide any lingering teach/puzzle elements so they don't show through
+    this.teachElements?.forEach(e => { if (e?.setVisible) e.setVisible(false) })
+    this.puzzleElements?.forEach(e => e?.destroy())
+    this.puzzleElements = []
+
+    const goEls = []
+
+    const ov = this.add.graphics().setDepth(100)
     ov.fillStyle(0x000000, 0.9)
     ov.fillRect(0, 0, 800, 500)
+    goEls.push(ov)
 
-    this.add.text(400, 160, 'GLITCHED!', {
+    goEls.push(this.add.text(400, 160, 'GLITCHED!', {
       fontSize: '36px', color: '#e94560',
       fontFamily: 'Courier New', fontStyle: 'bold'
-    }).setOrigin(0.5).setDepth(26)
+    }).setOrigin(0.5).setDepth(101))
 
-    this.add.text(400, 220,
+    goEls.push(this.add.text(400, 220,
       'The Malware Minions got you!\n' +
       'Tip: Count the loop repetitions\n' +
       'carefully before answering!', {
       fontSize: '13px', color: '#aaaaaa',
       fontFamily: 'Courier New', align: 'center', lineSpacing: 5
-    }).setOrigin(0.5).setDepth(26)
+    }).setOrigin(0.5).setDepth(101))
 
-    this.add.text(400, 305, 'Score: ' + this.score + ' pts', {
+    goEls.push(this.add.text(400, 305, 'Score: ' + this.score + ' pts', {
       fontSize: '14px', color: '#f5a623',
       fontFamily: 'Courier New'
-    }).setOrigin(0.5).setDepth(26)
+    }).setOrigin(0.5).setDepth(101))
 
-    const rb = this.add.graphics().setDepth(26)
+    const rb = this.add.graphics().setDepth(101)
     rb.fillStyle(0xe94560, 1)
     rb.fillRoundedRect(210, 360, 160, 44, 8)
-    this.add.text(290, 382, 'Try Again', {
+    goEls.push(rb)
+
+    goEls.push(this.add.text(290, 382, 'Try Again', {
       fontSize: '14px', color: '#ffffff',
       fontFamily: 'Courier New', fontStyle: 'bold'
-    }).setOrigin(0.5).setDepth(27)
-    const rh = this.add.rectangle(290, 382, 160, 44, 0xffffff, 0).setDepth(27)
+    }).setOrigin(0.5).setDepth(102))
+
+    const rh = this.add.rectangle(290, 382, 160, 44, 0xffffff, 0).setDepth(102)
     rh.setInteractive({ useHandCursor: true })
+    goEls.push(rh)
     rh.on('pointerdown', () => {
       this.lives = 3; this.score = 0
       this.livesText.setText('Lives: 3')
       this.scoreText.setText('Score: 0')
-      ov.destroy()
+      goEls.forEach(e => e?.destroy())
+      this.teachElements?.forEach(e => e?.destroy())
+      this.teachElements = []
       this.showLevelTeaching(1)
     })
 
-    const hb = this.add.graphics().setDepth(26)
+    const hb = this.add.graphics().setDepth(101)
     hb.fillStyle(0x2d1b4e, 1)
     hb.fillRoundedRect(410, 360, 160, 44, 8)
     hb.lineStyle(1, 0x9b59b6, 1)
     hb.strokeRoundedRect(410, 360, 160, 44, 8)
-    this.add.text(490, 382, 'Back to Hub', {
+    goEls.push(hb)
+
+    goEls.push(this.add.text(490, 382, 'Back to Hub', {
       fontSize: '12px', color: '#9b59b6',
       fontFamily: 'Courier New'
-    }).setOrigin(0.5).setDepth(27)
-    const hh = this.add.rectangle(490, 382, 160, 44, 0xffffff, 0).setDepth(27)
+    }).setOrigin(0.5).setDepth(102))
+
+    const hh = this.add.rectangle(490, 382, 160, 44, 0xffffff, 0).setDepth(102)
     hh.setInteractive({ useHandCursor: true })
+    goEls.push(hh)
     hh.on('pointerdown', () => this.scene.start('MapScene'))
   }
 

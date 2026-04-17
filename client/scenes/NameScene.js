@@ -39,7 +39,7 @@ export default class NameScene extends Phaser.Scene {
     // Ada image panel
     // -------------------------------------------------------------------------
     const ada = this.add.image(100, 380, 'ada')
-      .setScale(0.28)
+      .setScale(0.22)
       .setOrigin(0.5, 1);
 
     this.tweens.add({

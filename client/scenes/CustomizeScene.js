@@ -130,8 +130,8 @@ export default class CustomizeScene extends Phaser.Scene {
     // -------------------------------------------------------------------------
     // 7. Character display
     // -------------------------------------------------------------------------
-    this.characterDisplay = this.add.image(400, 155, 'base_tan')
-      .setScale(0.12)
+    this.characterDisplay = this.add.image(400, 135, 'base_tan')
+      .setScale(0.084)
       .setOrigin(0.5);
 
     // -------------------------------------------------------------------------
@@ -185,21 +185,22 @@ export default class CustomizeScene extends Phaser.Scene {
     const drawBg = (highlighted) => {
       bg.clear();
       bg.fillStyle(0x0f1923, 1);
-      bg.fillRoundedRect(x - 70, y - 105, 140, 170, 8);
+      bg.fillRoundedRect(x - 60, y - 84, 120, 128, 8);
       bg.lineStyle(highlighted ? 2 : 1.5, highlighted ? 0x4a90d9 : 0x2a2a4a, 1);
-      bg.strokeRoundedRect(x - 70, y - 105, 140, 170, 8);
+      bg.strokeRoundedRect(x - 60, y - 84, 120, 128, 8);
     };
     drawBg(false);
 
-    const img = this.add.image(x, y - 20, imageKey).setScale(0.12);
+    const img = this.add.image(x, y - 20, imageKey);
+    img.setDisplaySize(90, 100);
 
-    const lbl = this.add.text(x, y + 82, labelText, {
+    const lbl = this.add.text(x, y + 58, labelText, {
       fontSize: '11px',
       color: '#aaaaaa',
       fontFamily: 'Courier New',
     }).setOrigin(0.5);
 
-    const hit = this.add.rectangle(x, y - 8, 140, 170, 0xffffff, 0);
+    const hit = this.add.rectangle(x, y - 20, 120, 128, 0xffffff, 0);
     hit.setInteractive({ useHandCursor: true });
 
     hit.on('pointerover', () => {
@@ -236,7 +237,7 @@ export default class CustomizeScene extends Phaser.Scene {
     this.updateStepDots(step);
 
     const cx = [160, 390, 620];
-    const cy = 290;
+    const cy = 335;
 
     if (step === 1) {
       this.titleText.setText('Choose your look');
@@ -335,6 +336,7 @@ export default class CustomizeScene extends Phaser.Scene {
     this.characterDisplay.setTexture(key);
     this.clearCards();
     this.titleText.setText('You look amazing!');
+    this.titleText.setPosition(400, 75);
     this.adaText.setText(
       'Perfect! Welcome to Codebuilder Quest, ' +
       (window.playerData?.name || 'Codebuilder') + '!'
@@ -342,27 +344,27 @@ export default class CustomizeScene extends Phaser.Scene {
 
     const btnBg = this.add.graphics();
     btnBg.fillStyle(0xf5a623, 1);
-    btnBg.fillRoundedRect(300, 390, 200, 48, 8);
+    btnBg.fillRoundedRect(300, 345, 200, 48, 8);
 
-    const btnText = this.add.text(400, 414, "Let's go! ->", {
+    const btnText = this.add.text(400, 369, "Let's go! ->", {
       fontSize: '15px',
       color: '#1a1a2e',
       fontFamily: 'Courier New',
       fontStyle: 'bold',
     }).setOrigin(0.5);
 
-    const btnHit = this.add.rectangle(400, 414, 200, 48, 0xffffff, 0);
+    const btnHit = this.add.rectangle(400, 369, 200, 48, 0xffffff, 0);
     btnHit.setInteractive({ useHandCursor: true });
 
     btnHit.on('pointerover', () => {
       btnBg.clear();
       btnBg.fillStyle(0xffd700, 1);
-      btnBg.fillRoundedRect(300, 390, 200, 48, 8);
+      btnBg.fillRoundedRect(300, 345, 200, 48, 8);
     });
     btnHit.on('pointerout', () => {
       btnBg.clear();
       btnBg.fillStyle(0xf5a623, 1);
-      btnBg.fillRoundedRect(300, 390, 200, 48, 8);
+      btnBg.fillRoundedRect(300, 345, 200, 48, 8);
     });
     btnHit.on('pointerdown', () => {
       this.scene.start('MapScene');

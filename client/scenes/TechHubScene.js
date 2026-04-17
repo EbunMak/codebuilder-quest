@@ -52,6 +52,13 @@ export default class TechHubScene extends Phaser.Scene {
     // -------------------------------------------------------------------------
     // 3. Player character
     // -------------------------------------------------------------------------
+    const playerNameLabel = window.playerData?.name || '';
+    this.add.text(340, 310, playerNameLabel, {
+      fontSize: '13px',
+      color: '#ffffff',
+      fontFamily: 'Courier New',
+    }).setOrigin(0.5);
+
     if (window.playerData?.characterKey) {
       this.add.image(340, 370, 'player_char')
         .setScale(0.18)
@@ -379,12 +386,14 @@ export default class TechHubScene extends Phaser.Scene {
     jBg.fillRoundedRect(620, 455, 160, 32, 6);
     jBg.lineStyle(1, 0x9b59b6, 1);
     jBg.strokeRoundedRect(620, 455, 160, 32, 6);
+    jBg.setVisible(hasJourney);
 
     const jBtn = this.add.text(700, 471, '📊 My Journey', {
       fontSize: '11px',
-      color: hasJourney ? '#9b59b6' : '#444444',
+      color: '#9b59b6',
       fontFamily: 'Courier New',
     }).setOrigin(0.5);
+    jBtn.setVisible(hasJourney);
 
     if (hasJourney) {
       const jZone = this.add.zone(700, 471, 160, 32).setInteractive({ useHandCursor: true });

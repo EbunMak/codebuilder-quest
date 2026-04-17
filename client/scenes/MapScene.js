@@ -36,16 +36,22 @@ export default class MapScene extends Phaser.Scene {
     // 3. Player name tag top right
     // -------------------------------------------------------------------------
     const playerName = window.playerData?.name || '';
-    this.add.text(760, 18, playerName, {
-      fontSize: '12px',
+    const nameBadgeBg = this.add.graphics();
+    nameBadgeBg.fillStyle(0x0d0d1a, 0.8);
+    nameBadgeBg.lineStyle(1, 0x4a90d9, 0.5);
+    nameBadgeBg.fillRoundedRect(672, 10, 118, 24, 5);
+    nameBadgeBg.strokeRoundedRect(672, 10, 118, 24, 5);
+
+    this.add.text(783, 22, playerName, {
+      fontSize: '13px',
       color: '#ffffff',
       fontFamily: 'Courier New',
-    }).setOrigin(1, 0);
+    }).setOrigin(1, 0.5);
 
     // -------------------------------------------------------------------------
     // 4. Apartment building
     // -------------------------------------------------------------------------
-    const apartment = this.add.image(600, 260, 'apartment')
+    const apartment = this.add.image(680, 330, 'apartment')
       .setDisplaySize(180, 220)
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
@@ -53,9 +59,9 @@ export default class MapScene extends Phaser.Scene {
     // Apartment label backing + text
     const aptLabelBg = this.add.graphics();
     aptLabelBg.fillStyle(0x0d0d1a, 0.75);
-    aptLabelBg.fillRoundedRect(600 - 65, 465 - 12, 130, 24, 5);
+    aptLabelBg.fillRoundedRect(680 - 65, 330 - 12, 130, 24, 5);
 
-    this.add.text(600, 465, 'My Apartment', {
+    this.add.text(680, 330, 'My Apartment', {
       fontSize: '12px',
       color: '#ff6b9d',
       fontFamily: 'Courier New',
@@ -68,17 +74,17 @@ export default class MapScene extends Phaser.Scene {
     // -------------------------------------------------------------------------
     // 5. Tech Hub building
     // -------------------------------------------------------------------------
-    const techhub = this.add.image(550, 200, 'techhub')
+    const techhub = this.add.image(580, 180, 'techhub')
       .setDisplaySize(200, 210)
       .setOrigin(0.5)
       .setInteractive({ useHandCursor: true });
 
-    // Tech Hub label backing + text
+    // Tech Hub label backing + text (below the building)
     const hubLabelBg = this.add.graphics();
     hubLabelBg.fillStyle(0x0d0d1a, 0.75);
-    hubLabelBg.fillRoundedRect(550 - 55, 200 - 12, 110, 24, 5);
+    hubLabelBg.fillRoundedRect(580 - 55, 180 - 12, 110, 24, 5);
 
-    this.add.text(550, 200, 'Tech Hub', {
+    this.add.text(580, 180, 'Tech Hub', {
       fontSize: '12px',
       color: '#1abc9c',
       fontFamily: 'Courier New',
@@ -102,19 +108,19 @@ export default class MapScene extends Phaser.Scene {
     // -------------------------------------------------------------------------
     // 6. Ada hint bubble bottom left
     // -------------------------------------------------------------------------
+    this.add.image(28, 462, 'ada').setScale(0.09).setOrigin(0.5);
+
     const hintBg = this.add.graphics();
     hintBg.fillStyle(0x0d0d1a, 0.85);
-    hintBg.fillRoundedRect(20, 440, 220, 52, 8);
+    hintBg.fillRoundedRect(62, 438, 240, 52, 8);
     hintBg.lineStyle(1, 0x4a90d9, 1);
-    hintBg.strokeRoundedRect(20, 440, 220, 52, 8);
+    hintBg.strokeRoundedRect(62, 438, 240, 52, 8);
 
-    this.add.image(38, 466, 'ada').setScale(0.09).setOrigin(0.5);
-
-    this.add.text(130, 458, 'Click a building to explore!', {
-      fontSize: '10px',
+    this.add.text(76, 450, 'Click a building\nto explore!', {
+      fontSize: '11px',
       color: '#ffffff',
       fontFamily: 'Courier New',
-      wordWrap: { width: 160 },
+      lineSpacing: 4,
     });
 
     // -------------------------------------------------------------------------
@@ -122,26 +128,26 @@ export default class MapScene extends Phaser.Scene {
     // -------------------------------------------------------------------------
     const friendsBtnBg = this.add.graphics();
     friendsBtnBg.fillStyle(0x9b59b6, 1);
-    friendsBtnBg.fillRoundedRect(680 - 75, 460 - 18, 150, 36, 7);
+    friendsBtnBg.fillRoundedRect(665, 442, 130, 36, 7);
 
-    const friendsBtnText = this.add.text(680, 460, 'Play with Friends', {
+    const friendsBtnText = this.add.text(730, 460, 'Play with Friends', {
       fontSize: '11px',
       color: '#ffffff',
       fontFamily: 'Courier New',
     }).setOrigin(0.5);
 
-    const friendsBtnZone = this.add.zone(680, 460, 150, 36)
+    const friendsBtnZone = this.add.zone(730, 460, 130, 36)
       .setInteractive({ useHandCursor: true });
 
     friendsBtnZone.on('pointerover', () => {
       friendsBtnBg.clear();
       friendsBtnBg.fillStyle(0xad6dd4, 1);
-      friendsBtnBg.fillRoundedRect(680 - 75, 460 - 18, 150, 36, 7);
+      friendsBtnBg.fillRoundedRect(665, 442, 130, 36, 7);
     });
     friendsBtnZone.on('pointerout', () => {
       friendsBtnBg.clear();
       friendsBtnBg.fillStyle(0x9b59b6, 1);
-      friendsBtnBg.fillRoundedRect(680 - 75, 460 - 18, 150, 36, 7);
+      friendsBtnBg.fillRoundedRect(665, 442, 130, 36, 7);
     });
     friendsBtnZone.on('pointerdown', () => this._showFriendsOverlay());
   }

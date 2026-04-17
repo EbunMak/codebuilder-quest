@@ -16,14 +16,20 @@ export default class StoryScene extends Phaser.Scene {
     this.isTyping = false;
     this.typeTimer = null;
 
+    // Nearest-neighbour filtering on landmark textures to prevent blurring
+    this.textures.get('landmark_stack').setFilter(Phaser.Textures.FilterMode.NEAREST);
+    this.textures.get('landmark_pyramids').setFilter(Phaser.Textures.FilterMode.NEAREST);
+    this.textures.get('landmark_firewall').setFilter(Phaser.Textures.FilterMode.NEAREST);
+    this.textures.get('landmark_statue').setFilter(Phaser.Textures.FilterMode.NEAREST);
+
     this.pages = [
       {
-        text: "Hi! I'm Ada, named after Ada Lovelace — the world's first computer programmer. She lived in the 1800s and wrote the very first algorithm ever designed for a machine. Pretty cool right? Welcome to Codebuilder Quest — an adventure where you and your friends work together to save the world using code!",
+        text: "Hi! I'm Ada, named after Ada Lovelace. She was the world's first computer programmer. She lived in the 1800s and wrote the very first computer program. Pretty cool right? Enough about me. Welcome to Codebuilders Quest! It's an adventure where you and your friends work together to save the world using code!",
         button: 'Next',
         landmarks: false,
       },
       {
-        text: "Codebuilder-verse was once home to the greatest builders in history! They used imagination and coding skills to create legendary structures — The Leaning Tower of Stack, The Binary Pyramids, The Great Firewall, and The Statue of Debugging. This world was full of creativity, logic, and wonder.",
+        text: "Codebuilder-verse was once home to the greatest builders in history! They used imagination and coding skills to create legendary structures such as The Leaning Tower of Stack, The Binary Pyramids, The Great Firewall, and The Statue of Debugging. This world was full of creativity, logic, and wonder.",
         button: 'Next \u2192',
         landmarks: true,
       },
@@ -56,8 +62,8 @@ export default class StoryScene extends Phaser.Scene {
     // -------------------------------------------------------------------------
     // Ada image panel — left side
     // -------------------------------------------------------------------------
-    const ada = this.add.image(100, 380, 'ada')
-      .setScale(0.28)
+    const ada = this.add.image(75, 380, 'ada')
+      .setScale(0.22)
       .setOrigin(0.5, 1);
 
     this.tweens.add({
@@ -72,15 +78,16 @@ export default class StoryScene extends Phaser.Scene {
     // Nameplate — centered at x=100 y=390, size 110x24
     const nameplateGfx = this.add.graphics();
     nameplateGfx.fillStyle(0x1e1035, 1);
-    nameplateGfx.fillRoundedRect(45, 378, 110, 24, 6);
+    nameplateGfx.fillRoundedRect(20, 378, 110, 24, 6);
     nameplateGfx.lineStyle(1, 0x9b59b6, 1);
-    nameplateGfx.strokeRoundedRect(45, 378, 110, 24, 6);
+    nameplateGfx.strokeRoundedRect(20, 378, 110, 24, 6);
 
-    this.add.text(100, 390, 'Ada', {
+    this.add.text(75, 390, 'Ada', {
       fontSize: '11px',
       color: '#9b59b6',
       fontStyle: 'bold',
       fontFamily: 'Courier New',
+      resolution: 2,
     }).setOrigin(0.5, 0.5);
 
     // -------------------------------------------------------------------------
@@ -109,8 +116,9 @@ export default class StoryScene extends Phaser.Scene {
       fontSize: '13px',
       color: '#ffffff',
       fontFamily: 'Courier New',
-      wordWrap: { width: 560 },
+      wordWrap: { width: 548, useAdvancedWrap: true },
       lineSpacing: 8,
+      resolution: 2,
     });
 
     // -------------------------------------------------------------------------
@@ -130,6 +138,7 @@ export default class StoryScene extends Phaser.Scene {
       color: '#1a1a2e',
       fontStyle: 'bold',
       fontFamily: 'Courier New',
+      resolution: 2,
     }).setOrigin(0.5, 0.5);
 
     this.nextBtnZone = this.add.zone(680, 390, 110, 38)
@@ -163,6 +172,7 @@ export default class StoryScene extends Phaser.Scene {
       fontSize: '11px',
       color: '#444444',
       fontFamily: 'Courier New',
+      resolution: 2,
     }).setOrigin(1, 0).setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
         this.scene.start('NameScene');
@@ -221,9 +231,9 @@ export default class StoryScene extends Phaser.Scene {
       { key: 'landmark_statue',   label: 'Statue of\nDebugging',     border: 0xf5a623 },
     ];
 
-    const cardW = 155;
-    const cardH = 155;
-    const gap = 18;
+    const cardW = 170;
+    const cardH = 170;
+    const gap = 12;
     const totalW = cardW * 4 + gap * 3;
     const startX = (800 - totalW) / 2 + cardW / 2;
     const cardY = 370;
@@ -238,7 +248,7 @@ export default class StoryScene extends Phaser.Scene {
       bg.strokeRoundedRect(x - cardW / 2, cardY - cardH / 2, cardW, cardH, 10);
 
       const img = this.add.image(x, cardY - 14, lm.key);
-      img.setDisplaySize(120, 110);
+      img.setDisplaySize(Math.min(130, img.width), Math.min(120, img.height));
       img.setOrigin(0.5);
 
       const lbl = this.add.text(x, cardY + cardH / 2 - 18, lm.label, {
@@ -246,6 +256,7 @@ export default class StoryScene extends Phaser.Scene {
         color: '#cccccc',
         fontFamily: 'Courier New',
         align: 'center',
+        resolution: 2,
       }).setOrigin(0.5);
 
       this.landmarkElements.push(bg, img, lbl);
@@ -277,7 +288,7 @@ export default class StoryScene extends Phaser.Scene {
     }
 
     // Reposition button
-    const btnY = index === 1 ? 460 : 390;
+    const btnY = index === 1 ? 480 : 390;
     this._btnY = btnY;
     this._drawNextBtn(0xf5a623);
     this.nextBtnText.setText(page.button).setPosition(680, btnY);
